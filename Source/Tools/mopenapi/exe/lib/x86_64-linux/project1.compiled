@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/home/igor/development/fpc/bin/x86_64-linux/fpc.sh" Date="1740837944"/>
+  <Params Value=" -MObjFPC -Scghi -Cg -O1 -gw3 -gl -l -vewnhibq -Fi/home/igor/development/tools/mopenapi/exe/lib/x86_64-linux -Fi/home/igor/development/ccr/mORMot2-master/src -Fi/home/igor/development/ccr/mORMot2-master/src/core -Fi/home/igor/development/ccr/mORMot2-master/src/net -Fi/home/igor/development/ccr/mORMot2-master/packages/lazarus -Fo/home/igor/development/ccr/mORMot2-master/static/x86_64-linux/static/x86_64-linux -Fu/home/igor/development/tools/mopenapi/exe -Fu/home/igor/development/lazarus/lcl/units/x86_64-linux/qt5 -Fu/home/igor/development/lazarus/lcl/units/x86_64-linux -Fu/home/igor/development/lazarus/components/freetype/lib/x86_64-linux -Fu/home/igor/development/lazarus/components/lazutils/lib/x86_64-linux -Fu/home/igor/development/ccr/mORMot2-master/lib/x86_64-linux -Fu/home/igor/development/lazarus/packager/units/x86_64-linux -FU/home/igor/development/tools/mopenapi/exe/lib/x86_64-linux/ -FE/home/igor/development/tools/mopenapi/exe/ -o/home/igor/development/tools/mopenapi/exe/project1 -dLCL -dLCLqt5 project1.lpr"/>
+  <Complete Value="False"/>
+</CONFIG>

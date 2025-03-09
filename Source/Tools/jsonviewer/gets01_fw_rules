@@ -1,0 +1,739 @@
+unit gets01_fw_rules;
+
+interface
+
+uses SysUtils, Classes, fpJSON;
+
+
+Type
+  
+  TdataIteminterface = Array of String;
+
+Function CreateTdataIteminterface(AJSON : TJSONData) : TdataIteminterface;
+Procedure SaveTdataIteminterfaceToJSON(AnArray : TdataIteminterface; AJSONArray : TJSONArray); overload;
+Function SaveTdataIteminterfaceToJSON(AnArray : TdataIteminterface) : TJSONArray; overload;
+
+
+Type
+  
+  
+  { -----------------------------------------------------------------------
+    TdataItem
+    -----------------------------------------------------------------------}
+  
+  TdataItem = class(TObject)
+  Private
+    Fid : Integer;
+    F_type : String;
+    F_interface : TdataIteminterface;
+    Fipprotocol : String;
+    Fprotocol : String;
+    Ficmptype : Boolean;
+    Fsource : String;
+    Fsource_port : Boolean;
+    Fdestination : String;
+    Fdestination_port : Boolean;
+    Fdescr : String;
+    Fdisabled : Boolean;
+    Flog : Boolean;
+    Ftag : String;
+    Fstatetype : String;
+    Ftcp_flags_any : Boolean;
+    Ftcp_flags_out_of : Boolean;
+    Ftcp_flags_set : Boolean;
+    Fgateway : Boolean;
+    Fsched : Boolean;
+    Fdnpipe : Boolean;
+    Fpdnpipe : Boolean;
+    Fdefaultqueue : Boolean;
+    Fackqueue : Boolean;
+    Ffloating : Boolean;
+    Fquick : Boolean;
+    Fdirection : String;
+    Ftracker : Integer;
+    Fassociated_rule_id : Boolean;
+    Fcreated_time : Integer;
+    Fcreated_by : String;
+    Fupdated_time : Integer;
+    Fupdated_by : String;
+  Protected
+    Procedure Setid(AValue : Integer); virtual;
+    Procedure Set_type(AValue : String); virtual;
+    Procedure Set_interface(AValue : TdataIteminterface); virtual;
+    Procedure Setipprotocol(AValue : String); virtual;
+    Procedure Setprotocol(AValue : String); virtual;
+    Procedure Seticmptype(AValue : Boolean); virtual;
+    Procedure Setsource(AValue : String); virtual;
+    Procedure Setsource_port(AValue : Boolean); virtual;
+    Procedure Setdestination(AValue : String); virtual;
+    Procedure Setdestination_port(AValue : Boolean); virtual;
+    Procedure Setdescr(AValue : String); virtual;
+    Procedure Setdisabled(AValue : Boolean); virtual;
+    Procedure Setlog(AValue : Boolean); virtual;
+    Procedure Settag(AValue : String); virtual;
+    Procedure Setstatetype(AValue : String); virtual;
+    Procedure Settcp_flags_any(AValue : Boolean); virtual;
+    Procedure Settcp_flags_out_of(AValue : Boolean); virtual;
+    Procedure Settcp_flags_set(AValue : Boolean); virtual;
+    Procedure Setgateway(AValue : Boolean); virtual;
+    Procedure Setsched(AValue : Boolean); virtual;
+    Procedure Setdnpipe(AValue : Boolean); virtual;
+    Procedure Setpdnpipe(AValue : Boolean); virtual;
+    Procedure Setdefaultqueue(AValue : Boolean); virtual;
+    Procedure Setackqueue(AValue : Boolean); virtual;
+    Procedure Setfloating(AValue : Boolean); virtual;
+    Procedure Setquick(AValue : Boolean); virtual;
+    Procedure Setdirection(AValue : String); virtual;
+    Procedure Settracker(AValue : Integer); virtual;
+    Procedure Setassociated_rule_id(AValue : Boolean); virtual;
+    Procedure Setcreated_time(AValue : Integer); virtual;
+    Procedure Setcreated_by(AValue : String); virtual;
+    Procedure Setupdated_time(AValue : Integer); virtual;
+    Procedure Setupdated_by(AValue : String); virtual;
+  Public
+    Constructor CreateFromJSON(AJSON : TJSONData); virtual;
+    Procedure LoadFromJSON(AJSON : TJSONData); virtual;
+    Function SaveToJSON : TJSONObject; overload;
+    Procedure SaveToJSON(AJSON : TJSONObject); overload; virtual;
+    Property id : Integer Read Fid Write Setid;
+    Property _type : String Read F_type Write Set_type;
+    Property _interface : TdataIteminterface Read F_interface Write Set_interface;
+    Property ipprotocol : String Read Fipprotocol Write Setipprotocol;
+    Property protocol : String Read Fprotocol Write Setprotocol;
+    Property icmptype : Boolean Read Ficmptype Write Seticmptype;
+    Property source : String Read Fsource Write Setsource;
+    Property source_port : Boolean Read Fsource_port Write Setsource_port;
+    Property destination : String Read Fdestination Write Setdestination;
+    Property destination_port : Boolean Read Fdestination_port Write Setdestination_port;
+    Property descr : String Read Fdescr Write Setdescr;
+    Property disabled : Boolean Read Fdisabled Write Setdisabled;
+    Property log : Boolean Read Flog Write Setlog;
+    Property tag : String Read Ftag Write Settag;
+    Property statetype : String Read Fstatetype Write Setstatetype;
+    Property tcp_flags_any : Boolean Read Ftcp_flags_any Write Settcp_flags_any;
+    Property tcp_flags_out_of : Boolean Read Ftcp_flags_out_of Write Settcp_flags_out_of;
+    Property tcp_flags_set : Boolean Read Ftcp_flags_set Write Settcp_flags_set;
+    Property gateway : Boolean Read Fgateway Write Setgateway;
+    Property sched : Boolean Read Fsched Write Setsched;
+    Property dnpipe : Boolean Read Fdnpipe Write Setdnpipe;
+    Property pdnpipe : Boolean Read Fpdnpipe Write Setpdnpipe;
+    Property defaultqueue : Boolean Read Fdefaultqueue Write Setdefaultqueue;
+    Property ackqueue : Boolean Read Fackqueue Write Setackqueue;
+    Property floating : Boolean Read Ffloating Write Setfloating;
+    Property quick : Boolean Read Fquick Write Setquick;
+    Property direction : String Read Fdirection Write Setdirection;
+    Property tracker : Integer Read Ftracker Write Settracker;
+    Property associated_rule_id : Boolean Read Fassociated_rule_id Write Setassociated_rule_id;
+    Property created_time : Integer Read Fcreated_time Write Setcreated_time;
+    Property created_by : String Read Fcreated_by Write Setcreated_by;
+    Property updated_time : Integer Read Fupdated_time Write Setupdated_time;
+    Property updated_by : String Read Fupdated_by Write Setupdated_by;
+  end;
+  
+  Tdata = Array of TdataItem;
+
+Procedure ClearArray(var anArray : Tdata); overload;
+Function CreateTdata(AJSON : TJSONData) : Tdata;
+Procedure SaveTdataToJSON(AnArray : Tdata; AJSONArray : TJSONArray); overload;
+Function SaveTdataToJSON(AnArray : Tdata) : TJSONArray; overload;
+
+
+Type
+  
+  
+  { -----------------------------------------------------------------------
+    TMyObject
+    -----------------------------------------------------------------------}
+  
+  TMyObject = class(TObject)
+  Private
+    Fcode : Integer;
+    Fstatus : String;
+    Fresponse_id : String;
+    Fmessage : String;
+    Fdata : Tdata;
+  Protected
+    Procedure Setcode(AValue : Integer); virtual;
+    Procedure Setstatus(AValue : String); virtual;
+    Procedure Setresponse_id(AValue : String); virtual;
+    Procedure Setmessage(AValue : String); virtual;
+    Procedure Setdata(AValue : Tdata); virtual;
+  Public
+    Destructor Destroy; override;
+    Constructor CreateFromJSON(AJSON : TJSONData); virtual;
+    Procedure LoadFromJSON(AJSON : TJSONData); virtual;
+    Function SaveToJSON : TJSONObject; overload;
+    Procedure SaveToJSON(AJSON : TJSONObject); overload; virtual;
+    Property code : Integer Read Fcode Write Setcode;
+    Property status : String Read Fstatus Write Setstatus;
+    Property response_id : String Read Fresponse_id Write Setresponse_id;
+    Property message : String Read Fmessage Write Setmessage;
+    Property data : Tdata Read Fdata Write Setdata;
+  end;
+
+implementation
+
+
+
+
+
+
+Function CreateTdataIteminterface(AJSON : TJSONData) : TdataIteminterface;
+
+var
+  I : integer;
+
+begin
+  SetLength(Result,AJSON.Count);
+  For I:=0 to AJSON.Count-1 do
+    Result[i]:=AJSON.Items[i].AsString;
+End;
+
+
+Function SaveTdataIteminterfaceToJSON(AnArray : TdataIteminterface) : TJSONArray;
+begin
+  Result:=TJSONArray.Create;
+  Try
+    SaveTdataIteminterfaceToJSON(AnArray,Result);
+  Except
+    FreeAndNil(Result);
+    Raise;
+  end;
+end;
+
+
+Procedure SaveTdataIteminterfaceToJSON(AnArray : TdataIteminterface; AJSONArray : TJSONArray);
+
+var
+  I : integer;
+
+begin
+  For I:=0 to Length(AnArray)-1 do
+    AJSONArray.Add(AnArray[i]);
+end;
+
+
+
+{ -----------------------------------------------------------------------
+  TdataItem
+  -----------------------------------------------------------------------}
+
+
+Procedure TdataItem.Setid(AValue : Integer);
+
+begin
+  if (Fid=AValue) then exit;
+  Fid:=AValue;
+end;
+
+Procedure TdataItem.Set_type(AValue : String);
+
+begin
+  if (F_type=AValue) then exit;
+  F_type:=AValue;
+end;
+
+Procedure TdataItem.Set_interface(AValue : TdataIteminterface);
+
+begin
+  if (F_interface=AValue) then exit;
+  F_interface:=AValue;
+end;
+
+Procedure TdataItem.Setipprotocol(AValue : String);
+
+begin
+  if (Fipprotocol=AValue) then exit;
+  Fipprotocol:=AValue;
+end;
+
+Procedure TdataItem.Setprotocol(AValue : String);
+
+begin
+  if (Fprotocol=AValue) then exit;
+  Fprotocol:=AValue;
+end;
+
+Procedure TdataItem.Seticmptype(AValue : Boolean);
+
+begin
+  if (Ficmptype=AValue) then exit;
+  Ficmptype:=AValue;
+end;
+
+Procedure TdataItem.Setsource(AValue : String);
+
+begin
+  if (Fsource=AValue) then exit;
+  Fsource:=AValue;
+end;
+
+Procedure TdataItem.Setsource_port(AValue : Boolean);
+
+begin
+  if (Fsource_port=AValue) then exit;
+  Fsource_port:=AValue;
+end;
+
+Procedure TdataItem.Setdestination(AValue : String);
+
+begin
+  if (Fdestination=AValue) then exit;
+  Fdestination:=AValue;
+end;
+
+Procedure TdataItem.Setdestination_port(AValue : Boolean);
+
+begin
+  if (Fdestination_port=AValue) then exit;
+  Fdestination_port:=AValue;
+end;
+
+Procedure TdataItem.Setdescr(AValue : String);
+
+begin
+  if (Fdescr=AValue) then exit;
+  Fdescr:=AValue;
+end;
+
+Procedure TdataItem.Setdisabled(AValue : Boolean);
+
+begin
+  if (Fdisabled=AValue) then exit;
+  Fdisabled:=AValue;
+end;
+
+Procedure TdataItem.Setlog(AValue : Boolean);
+
+begin
+  if (Flog=AValue) then exit;
+  Flog:=AValue;
+end;
+
+Procedure TdataItem.Settag(AValue : String);
+
+begin
+  if (Ftag=AValue) then exit;
+  Ftag:=AValue;
+end;
+
+Procedure TdataItem.Setstatetype(AValue : String);
+
+begin
+  if (Fstatetype=AValue) then exit;
+  Fstatetype:=AValue;
+end;
+
+Procedure TdataItem.Settcp_flags_any(AValue : Boolean);
+
+begin
+  if (Ftcp_flags_any=AValue) then exit;
+  Ftcp_flags_any:=AValue;
+end;
+
+Procedure TdataItem.Settcp_flags_out_of(AValue : Boolean);
+
+begin
+  if (Ftcp_flags_out_of=AValue) then exit;
+  Ftcp_flags_out_of:=AValue;
+end;
+
+Procedure TdataItem.Settcp_flags_set(AValue : Boolean);
+
+begin
+  if (Ftcp_flags_set=AValue) then exit;
+  Ftcp_flags_set:=AValue;
+end;
+
+Procedure TdataItem.Setgateway(AValue : Boolean);
+
+begin
+  if (Fgateway=AValue) then exit;
+  Fgateway:=AValue;
+end;
+
+Procedure TdataItem.Setsched(AValue : Boolean);
+
+begin
+  if (Fsched=AValue) then exit;
+  Fsched:=AValue;
+end;
+
+Procedure TdataItem.Setdnpipe(AValue : Boolean);
+
+begin
+  if (Fdnpipe=AValue) then exit;
+  Fdnpipe:=AValue;
+end;
+
+Procedure TdataItem.Setpdnpipe(AValue : Boolean);
+
+begin
+  if (Fpdnpipe=AValue) then exit;
+  Fpdnpipe:=AValue;
+end;
+
+Procedure TdataItem.Setdefaultqueue(AValue : Boolean);
+
+begin
+  if (Fdefaultqueue=AValue) then exit;
+  Fdefaultqueue:=AValue;
+end;
+
+Procedure TdataItem.Setackqueue(AValue : Boolean);
+
+begin
+  if (Fackqueue=AValue) then exit;
+  Fackqueue:=AValue;
+end;
+
+Procedure TdataItem.Setfloating(AValue : Boolean);
+
+begin
+  if (Ffloating=AValue) then exit;
+  Ffloating:=AValue;
+end;
+
+Procedure TdataItem.Setquick(AValue : Boolean);
+
+begin
+  if (Fquick=AValue) then exit;
+  Fquick:=AValue;
+end;
+
+Procedure TdataItem.Setdirection(AValue : String);
+
+begin
+  if (Fdirection=AValue) then exit;
+  Fdirection:=AValue;
+end;
+
+Procedure TdataItem.Settracker(AValue : Integer);
+
+begin
+  if (Ftracker=AValue) then exit;
+  Ftracker:=AValue;
+end;
+
+Procedure TdataItem.Setassociated_rule_id(AValue : Boolean);
+
+begin
+  if (Fassociated_rule_id=AValue) then exit;
+  Fassociated_rule_id:=AValue;
+end;
+
+Procedure TdataItem.Setcreated_time(AValue : Integer);
+
+begin
+  if (Fcreated_time=AValue) then exit;
+  Fcreated_time:=AValue;
+end;
+
+Procedure TdataItem.Setcreated_by(AValue : String);
+
+begin
+  if (Fcreated_by=AValue) then exit;
+  Fcreated_by:=AValue;
+end;
+
+Procedure TdataItem.Setupdated_time(AValue : Integer);
+
+begin
+  if (Fupdated_time=AValue) then exit;
+  Fupdated_time:=AValue;
+end;
+
+Procedure TdataItem.Setupdated_by(AValue : String);
+
+begin
+  if (Fupdated_by=AValue) then exit;
+  Fupdated_by:=AValue;
+end;
+
+Constructor TdataItem.CreateFromJSON(AJSON : TJSONData);
+
+begin
+  Create();
+  LoadFromJSON(AJSON);
+end;
+
+Procedure TdataItem.LoadFromJSON(AJSON : TJSONData);
+
+var
+  E : TJSONEnum;
+
+begin
+  for E in AJSON do
+    begin
+    case E.Key of
+    'id':
+      id:=E.Value.AsInteger;
+    'type':
+      _type:=E.Value.AsString;
+    'interface':
+      _interface:=CreateTdataIteminterface(E.Value);
+    'ipprotocol':
+      ipprotocol:=E.Value.AsString;
+    'protocol':
+      protocol:=E.Value.AsString;
+    'icmptype':
+      icmptype:=E.Value.AsBoolean;
+    'source':
+      source:=E.Value.AsString;
+    'source_port':
+      source_port:=E.Value.AsBoolean;
+    'destination':
+      destination:=E.Value.AsString;
+    'destination_port':
+      destination_port:=E.Value.AsBoolean;
+    'descr':
+      descr:=E.Value.AsString;
+    'disabled':
+      disabled:=E.Value.AsBoolean;
+    'log':
+      log:=E.Value.AsBoolean;
+    'tag':
+      tag:=E.Value.AsString;
+    'statetype':
+      statetype:=E.Value.AsString;
+    'tcp_flags_any':
+      tcp_flags_any:=E.Value.AsBoolean;
+    'tcp_flags_out_of':
+      tcp_flags_out_of:=E.Value.AsBoolean;
+    'tcp_flags_set':
+      tcp_flags_set:=E.Value.AsBoolean;
+    'gateway':
+      gateway:=E.Value.AsBoolean;
+    'sched':
+      sched:=E.Value.AsBoolean;
+    'dnpipe':
+      dnpipe:=E.Value.AsBoolean;
+    'pdnpipe':
+      pdnpipe:=E.Value.AsBoolean;
+    'defaultqueue':
+      defaultqueue:=E.Value.AsBoolean;
+    'ackqueue':
+      ackqueue:=E.Value.AsBoolean;
+    'floating':
+      floating:=E.Value.AsBoolean;
+    'quick':
+      quick:=E.Value.AsBoolean;
+    'direction':
+      direction:=E.Value.AsString;
+    'tracker':
+      tracker:=E.Value.AsInteger;
+    'associated_rule_id':
+      associated_rule_id:=E.Value.AsBoolean;
+    'created_time':
+      created_time:=E.Value.AsInteger;
+    'created_by':
+      created_by:=E.Value.AsString;
+    'updated_time':
+      updated_time:=E.Value.AsInteger;
+    'updated_by':
+      updated_by:=E.Value.AsString;
+    else
+      Raise EJSON.CreateFmt('"%s" : Unknown property : "%s"',[ClassName,E.Key]);
+    end;
+    end;
+end;
+Function  TdataItem.SaveToJSON : TJSONObject;
+begin
+  Result:=TJSONObject.Create;
+  Try
+    SaveToJSON(Result);
+  except
+    FreeAndNil(Result);
+    Raise;
+  end;
+end;
+
+
+Procedure TdataItem.SaveToJSON(AJSON : TJSONObject);
+
+begin
+  AJSON.Add('id',id);
+  AJSON.Add('type',_type);
+  AJSON.Add('interface',SaveTdataIteminterfaceToJSON(_interface));
+  AJSON.Add('ipprotocol',ipprotocol);
+  AJSON.Add('protocol',protocol);
+  AJSON.Add('icmptype',icmptype);
+  AJSON.Add('source',source);
+  AJSON.Add('source_port',source_port);
+  AJSON.Add('destination',destination);
+  AJSON.Add('destination_port',destination_port);
+  AJSON.Add('descr',descr);
+  AJSON.Add('disabled',disabled);
+  AJSON.Add('log',log);
+  AJSON.Add('tag',tag);
+  AJSON.Add('statetype',statetype);
+  AJSON.Add('tcp_flags_any',tcp_flags_any);
+  AJSON.Add('tcp_flags_out_of',tcp_flags_out_of);
+  AJSON.Add('tcp_flags_set',tcp_flags_set);
+  AJSON.Add('gateway',gateway);
+  AJSON.Add('sched',sched);
+  AJSON.Add('dnpipe',dnpipe);
+  AJSON.Add('pdnpipe',pdnpipe);
+  AJSON.Add('defaultqueue',defaultqueue);
+  AJSON.Add('ackqueue',ackqueue);
+  AJSON.Add('floating',floating);
+  AJSON.Add('quick',quick);
+  AJSON.Add('direction',direction);
+  AJSON.Add('tracker',tracker);
+  AJSON.Add('associated_rule_id',associated_rule_id);
+  AJSON.Add('created_time',created_time);
+  AJSON.Add('created_by',created_by);
+  AJSON.Add('updated_time',updated_time);
+  AJSON.Add('updated_by',updated_by);
+end;
+
+
+Procedure ClearArray(Var anArray : Tdata);
+
+var
+  I : integer;
+
+begin
+  For I:=0 to Length(anArray)-1 do
+    FreeAndNil(anArray[I]);
+  SetLength(anArray,0);
+End;
+
+
+Function CreateTdata(AJSON : TJSONData) : Tdata;
+
+var
+  I : integer;
+
+begin
+  SetLength(Result,AJSON.Count);
+  For I:=0 to AJSON.Count-1 do
+    Result[i]:=TdataItem.CreateFromJSON(AJSON.Items[i]);
+End;
+
+
+Function SaveTdataToJSON(AnArray : Tdata) : TJSONArray;
+begin
+  Result:=TJSONArray.Create;
+  Try
+    SaveTdataToJSON(AnArray,Result);
+  Except
+    FreeAndNil(Result);
+    Raise;
+  end;
+end;
+
+
+Procedure SaveTdataToJSON(AnArray : Tdata; AJSONArray : TJSONArray);
+
+var
+  I : integer;
+
+begin
+  For I:=0 to Length(AnArray)-1 do
+    AJSONArray.Add(AnArray[i].SaveToJSON);
+end;
+
+
+
+{ -----------------------------------------------------------------------
+  TMyObject
+  -----------------------------------------------------------------------}
+
+Destructor TMyObject.Destroy;
+
+begin
+  ClearArray(Fdata);
+  inherited;
+end;
+
+
+Procedure TMyObject.Setcode(AValue : Integer);
+
+begin
+  if (Fcode=AValue) then exit;
+  Fcode:=AValue;
+end;
+
+Procedure TMyObject.Setstatus(AValue : String);
+
+begin
+  if (Fstatus=AValue) then exit;
+  Fstatus:=AValue;
+end;
+
+Procedure TMyObject.Setresponse_id(AValue : String);
+
+begin
+  if (Fresponse_id=AValue) then exit;
+  Fresponse_id:=AValue;
+end;
+
+Procedure TMyObject.Setmessage(AValue : String);
+
+begin
+  if (Fmessage=AValue) then exit;
+  Fmessage:=AValue;
+end;
+
+Procedure TMyObject.Setdata(AValue : Tdata);
+
+begin
+  if (Fdata=AValue) then exit;
+  Fdata:=AValue;
+end;
+
+Constructor TMyObject.CreateFromJSON(AJSON : TJSONData);
+
+begin
+  Create();
+  LoadFromJSON(AJSON);
+end;
+
+Procedure TMyObject.LoadFromJSON(AJSON : TJSONData);
+
+var
+  E : TJSONEnum;
+
+begin
+  for E in AJSON do
+    begin
+    case E.Key of
+    'code':
+      code:=E.Value.AsInteger;
+    'status':
+      status:=E.Value.AsString;
+    'response_id':
+      response_id:=E.Value.AsString;
+    'message':
+      message:=E.Value.AsString;
+    'data':
+      data:=CreateTdata(E.Value);
+    else
+      Raise EJSON.CreateFmt('"%s" : Unknown property : "%s"',[ClassName,E.Key]);
+    end;
+    end;
+end;
+Function  TMyObject.SaveToJSON : TJSONObject;
+begin
+  Result:=TJSONObject.Create;
+  Try
+    SaveToJSON(Result);
+  except
+    FreeAndNil(Result);
+    Raise;
+  end;
+end;
+
+
+Procedure TMyObject.SaveToJSON(AJSON : TJSONObject);
+
+begin
+  AJSON.Add('code',code);
+  AJSON.Add('status',status);
+  AJSON.Add('response_id',response_id);
+  AJSON.Add('message',message);
+  AJSON.Add('data',SaveTdataToJSON(data));
+end;
+
+end.
