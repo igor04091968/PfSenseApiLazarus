@@ -1,7 +1,0 @@
-{"version":1,"strings":[
-{"hash":246353726,"name":"tauthenticationform.caption","sourcebytes":[72,84,84,80,32,65,117,116,104,101,110,116,105,99,97,116,105,111,110],"value":"HTTP Authentication"},
-{"hash":6796286,"name":"tauthenticationform.cbusername.text","sourcebytes":[97,100,109,105,110],"value":"admin"},
-{"hash":145427940,"name":"tauthenticationform.lepassword.caption","sourcebytes":[38,80,97,115,115,119,111,114,100],"value":"&Password"},
-{"hash":164195829,"name":"tauthenticationform.lcbusername.caption","sourcebytes":[38,85,115,101,114,110,97,109,101],"value":"&Username"},
-{"hash":214988339,"name":"tauthenticationform.epassword.text","sourcebytes":[70,108,118,98,121,98,99,110,104,102,110,106,104,45,49,50,51],"value":"Flvbybcnhfnjh-123"}
-]}
